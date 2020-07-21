@@ -13,7 +13,7 @@ public with sharing class CandidateGradeController {
     @AuraEnabled
     public static CandidateGradeInfo getCandidateGrade(String contactId) {
         
-        // Build the query
+        // Build the query dynamically
         String fields = 'Name, Salary__c, NextAvailableDate__c';
         String filter = 'Id = \'' + contactId + '\'';
         String query = 'SELECT ' + fields + ' FROM Contact WHERE (' + filter + ')';
