@@ -6,9 +6,7 @@ public with sharing class CandidateGradeController {
     public static CandidateGradeInfo getCandidateGrade(Id contactId) {
         
         // Build the query
-        String fields = 'Name, Salary__c, NextAvailableDate__c';
-        String filter = 'Id = \'' + contactId + '\'';
-        String query  = 'SELECT ' + fields + ' FROM Contact WHERE (' + filter + ')';
+        String query = 'SELECT Name, Salary__c, NextAvailableDate__c FROM Contact WHERE Id = \'' + contactId + '\'';
 
         User currentUser = [SELECT Seniority__c FROM User where Id = :UserInfo.getUserId()];
         String temperature = '';
