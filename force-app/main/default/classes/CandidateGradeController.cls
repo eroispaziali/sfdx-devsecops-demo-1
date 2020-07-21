@@ -6,62 +6,8 @@ public with sharing class CandidateGradeController {
     public static CandidateGradeInfo getCandidateGrade(String contactId) {
         
         // Build the query
-        public with sharing class CandidateGradeController {
-    public CandidateGradeController() {   
-    }
-    
-    @AuraEnabled
-    public static CandidateGradeInfo getCandidateGrade(String contactId) {
-        
-        // Build the query dynamically
-        String fields = 'Name, Salary__c, NextAvailableDate__c';
-        String filter = 'Id = \'' + contactId + '\'';
-        String query = 'SELECT ' + fields + ' FROM Contact WHERE (' + filter + ')';
-        Contact currentContact = Database.query(query);
-
-        User currentUser = [SELECT Seniority__c FROM User where Id = :UserInfo.getUserId()];
-        String temperature = '';
-        Double commission = 0;
-        
-        if (currentContact.Salary__c >= 100000 && Date.today().daysBetween(currentContact.NextAvailableDate__c) < 90 ) {
-            temperature = 'Hot';
-        }
-        else if (currentContact.Salary__c < 100000 && Date.today().daysBetween(currentContact.NextAvailableDate__c) < 90 ) {
-            temperature = 'Medium';
-        }
-        else {
-            temperature = 'Cold';
-        }
-
-        Map<String, Double> seniorityCommissionMap = new Map<String, Double>();
-        seniorityCommissionMap.put('Senior',0.15);
-        seniorityCommissionMap.put('Medium',0.1);
-        seniorityCommissionMap.put('Junior',0.05);
-
-        if (seniorityCommissionMap.containsKey(currentUser.Seniority__c)) {
-            commission = Double.valueOf(currentContact.Salary__c) * seniorityCommissionMap.get(currentUser.Seniority__c);
-        }
-        else {
-            commission = Double.valueOf(currentContact.Salary__c) * 0.1;
-        }
-
-        return new CandidateGradeInfo(temperature, String.valueOf(commission));
-    }
-
-    public class CandidateGradeInfo {
-        @AuraEnabled
-        public String temperature {get;set;}
-
-        @AuraEnabled
-        public String commission {get;set;}
-
-        public CandidateGradeInfo(String temperature, String commission) {
-            this.temperature = temperature;
-            this.commission = commission;
-        }
-    }
-}
-
+        String selectQueryString = 'SELECT Name, Salary__c, NextAvailableDate__c FROM Contact where Id = \'' + contactId + '\'';
+        Contact currentContact = Database.query(selectQueryString);
 
         User currentUser = [SELECT Seniority__c FROM User where Id = :UserInfo.getUserId()];
         String temperature = '';
